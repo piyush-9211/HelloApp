@@ -2,40 +2,39 @@
 public class TicTacToe {
 
     static char[][] board = {
-            {'X', '-', '-'},
-            {'-', 'O', '-'},
+            {'-', '-', '-'},
+            {'-', '-', '-'},
             {'-', '-', '-'}
     };
 
 
     public static void main(String[] args) {
 
-        int row = 1;
-        int col = 0;
+        placeMove(1, 1, 'X');
 
-        if (isValidMove(row, col)) {
-
-            System.out.println("Valid move");
-
-        } else {
-
-            System.out.println("Invalid move");
-        }
+        printBoard();
     }
 
-    static boolean isValidMove(int row, int col) {
 
-        // Check boundaries
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
+    static void placeMove(int row, int col, char symbol) {
 
-            return false;
+        board[row][col] = symbol;
+    }
+
+
+    static void printBoard() {
+
+        System.out.println("-------------");
+
+        for (int row = 0; row < 3; row++) {
+
+            for (int col = 0; col < 3; col++) {
+
+                System.out.print("| " + board[row][col] + " ");
+            }
+
+            System.out.println("|");
+            System.out.println("-------------");
         }
-
-        if (board[row][col] != '-') {
-
-            return false;
-        }
-
-        return true;
     }
 }
