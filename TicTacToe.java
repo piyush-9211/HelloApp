@@ -1,27 +1,41 @@
 
 public class TicTacToe {
 
+    static char[][] board = {
+            {'X', '-', '-'},
+            {'-', 'O', '-'},
+            {'-', '-', '-'}
+    };
+
+
     public static void main(String[] args) {
 
-        int slot = 7;
+        int row = 1;
+        int col = 0;
 
-        System.out.println("Row: " + getRowFromSlot(slot));
-        System.out.println("Column: " + getColFromSlot(slot));
+        if (isValidMove(row, col)) {
+
+            System.out.println("Valid move");
+
+        } else {
+
+            System.out.println("Invalid move");
+        }
     }
 
-    /**
-     * Converts slot number into row index.
-     * Input: Slot number (1–9)
-     * Output: Row index (0–2)
-     */
-    static int getRowFromSlot(int slot) {
+    static boolean isValidMove(int row, int col) {
 
-        return (slot - 1) / 3;
-    }
+        // Check boundaries
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
 
+            return false;
+        }
 
-    static int getColFromSlot(int slot) {
+        if (board[row][col] != '-') {
 
-        return (slot - 1) % 3;
+            return false;
+        }
+
+        return true;
     }
 }
