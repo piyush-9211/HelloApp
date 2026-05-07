@@ -1,25 +1,27 @@
-import java.util.Scanner;
-
 
 public class TicTacToe {
 
-
     public static void main(String[] args) {
 
-        int slot = getUserSlot();
+        int slot = 7;
 
-        System.out.println("Slot entered: " + slot);
+        System.out.println("Row: " + getRowFromSlot(slot));
+        System.out.println("Column: " + getColFromSlot(slot));
+    }
+
+    /**
+     * Converts slot number into row index.
+     * Input: Slot number (1–9)
+     * Output: Row index (0–2)
+     */
+    static int getRowFromSlot(int slot) {
+
+        return (slot - 1) / 3;
     }
 
 
-    static int getUserSlot() {
+    static int getColFromSlot(int slot) {
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter slot number (1-9): ");
-
-        int slot = sc.nextInt();
-
-        return slot;
+        return (slot - 1) % 3;
     }
 }
