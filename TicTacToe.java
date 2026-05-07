@@ -1,33 +1,132 @@
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC7 allows the computer to make a random valid move.
+ * UC8 implements a continuous turn-based game loop.
  */
 public class TicTacToe {
 
     static char[][] board = {
-            {'X', '-', '-'},
-            {'-', 'O', '-'},
+            {'-', '-', '-'},
+            {'-', '-', '-'},
             {'-', '-', '-'}
     };
+
+    static boolean isHumanTurn = true;
+
+    static Scanner sc = new Scanner(System.in);
 
     /**
      * Entry point of the program.
      */
     public static void main(String[] args) {
 
-        System.out.println("Board Before Computer Move:");
-        printBoard();
+        while (true) {
 
-        computerMove();
+            printBoard();
 
-        System.out.println("Board After Computer Move:");
-        printBoard();
+            if (isHumanTurn) {
+
+                System.out.println("Human Turn");
+
+                int slot = getUserSlot();
+
+                int row = getRowFromSlot(slot);
+                int col = getColFromSlot(slot);
+
+                if (isValidMove(row, col)) {
+
+                    placeMove(row, col, 'X');
+
+                    if (checkWin('X')) {
+
+                        printBoard();
+                        System.out.println("Human Wins!");
+                        break;
+                    }
+
+                    isHumanTurn = false;
+
+                } else {
+
+                    System.out.println("Invalid Move");
+                }
+
+            } else {
+
+                System.out.println("Computer Turn");
+
+                computerMove();
+
+                if (checkWin('O')) {
+
+                    printBoard();
+                    System.out.println("Computer Wins!");
+                    break;
+                }
+
+                isHumanTurn = true;
+            }
+
+            if (isBoardFull()) {
+
+                printBoard();
+                System.out.println("Match Draw!");
+                break;
+            }
+        }
     }
 
     /**
-     * Generates a random valid move for the computer.
+     * Reads user slot input.
+     */
+    static int getUserSlot() {
+
+        System.out.print("Enter slot (1-9): ");
+
+        return sc.nextInt();
+    }
+
+    /**
+     * Converts slot to row index.
+     */
+    static int getRowFromSlot(int slot) {
+
+        return (slot - 1) / 3;
+    }
+
+    /**
+     * Converts slot to column index.
+     */
+    static int getColFromSlot(int slot) {
+
+        return (slot - 1) % 3;
+    }
+
+    /**
+     * Checks whether move is valid.
+     */
+    static boolean isValidMove(int row, int col) {
+
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+
+            return false;
+        }
+
+        return board[row][col] == '-';
+    }
+
+    /**
+     * Places move on board.
+     */
+    static void placeMove(int row, int col, char symbol) {
+
+        board[row][col] = symbol;
+    }
+
+    /**
+     * Computer generates random move.
      */
     static void computerMove() {
 
@@ -52,40 +151,61 @@ public class TicTacToe {
     }
 
     /**
-     * Converts slot number to row index.
+     * Checks win condition.
      */
-    static int getRowFromSlot(int slot) {
+    static boolean checkWin(char symbol) {
 
-        return (slot - 1) / 3;
-    }
+        for (int i = 0; i < 3; i++) {
 
-    /**
-     * Converts slot number to column index.
-     */
-    static int getColFromSlot(int slot) {
+            if (board[i][0] == symbol &&
+                board[i][1] == symbol &&
+                board[i][2] == symbol) {
 
-        return (slot - 1) % 3;
-    }
+                return true;
+            }
 
-    /**
-     * Checks whether move is valid.
-     */
-    static boolean isValidMove(int row, int col) {
+            if (board[0][i] == symbol &&
+                board[1][i] == symbol &&
+                board[2][i] == symbol) {
 
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
-
-            return false;
+                return true;
+            }
         }
 
-        return board[row][col] == '-';
+        if (board[0][0] == symbol &&
+            board[1][1] == symbol &&
+            board[2][2] == symbol) {
+
+            return true;
+        }
+
+        if (board[0][2] == symbol &&
+            board[1][1] == symbol &&
+            board[2][0] == symbol) {
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Places symbol on board.
+     * Checks whether board is full.
      */
-    static void placeMove(int row, int col, char symbol) {
+    static boolean isBoardFull() {
 
-        board[row][col] = symbol;
+        for (int row = 0; row < 3; row++) {
+
+            for (int col = 0; col < 3; col++) {
+
+                if (board[row][col] == '-') {
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
